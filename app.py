@@ -57,10 +57,7 @@ def verify_password(username, password):
 @app.route('/test')
 @auth.login_required
 def test():
-    ret = Response("You are not logged in")
-    ret.headers['WWW-Authenticate'] = 'Basic'
-    ret.headers['Content-Type'] ='text/html'
-    return ret, 401
+    return "you are logged in"
 
 @app.route("/")
 #@requires_auth

@@ -4,8 +4,8 @@ from collections import OrderedDict
 import simplejson as json
 
 def get_query(sql, *kwargs):
-    connectionString = 'DRIVER={SQL Server};SERVER=localhost;DATABASE=test;UID=sa;PWD=Password1!'
-    #connectionString = 'DRIVER={SQL Server};SERVER=dfdlmje-general-dbs.database.windows.net;DATABASE=test;UID=Y_apac_srir100;PWD=}hq*e<FKt3pq;6\#'
+    #connectionString = 'DRIVER={SQL Server};SERVER=localhost;DATABASE=test;UID=sa;PWD=Password1!'
+    connectionString = 'DRIVER={SQL Server};SERVER=dfdlmje-general-dbs.database.windows.net;DATABASE=test;UID=Y_apac_srir100;PWD=}hq*e<FKt3pq;6\#'
     conn = pyodbc.connect(connectionString)
     cursor = conn.cursor()
     cursor.execute(sql, kwargs)

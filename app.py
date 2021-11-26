@@ -44,8 +44,7 @@ app = Flask(__name__)
 auth = HTTPBasicAuth()
 
 users = {
-    "john": generate_password_hash("hello"),
-    "susan": generate_password_hash("bye")
+    "admin": generate_password_hash("Testing123#"),
 }
 
 @auth.verify_password
@@ -60,7 +59,7 @@ def test():
     return "you are logged in"
 
 @app.route("/")
-#@requires_auth
+@auth.login_required
 def index():
     return render_template('Car Tracker.html')
 

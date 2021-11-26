@@ -346,7 +346,7 @@
                     //("whatever you want to happen next")
 
                     let markers = [];
-                    const response = JSON.parse(msg);
+                    const response = msg;
                     console.log('response:', response);
                     listContent= "";
                     if (searchKey){ // If searchKey (carCode) is entered
@@ -406,7 +406,7 @@
         function getCurrent() {
             $.get('/historical', function(response){
                 // console.log(response)
-                markerGroups = JSON.parse(response);
+                markerGroups = response //JSON.parse(response);
                 
                 listContent= ""
                 for(let group in markerGroups) {

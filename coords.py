@@ -2,10 +2,11 @@ import xlrd
 import pyodbc
 from collections import OrderedDict
 import simplejson as json
+from flask import redirect, Response
 
 def get_query(sql, *kwargs):
-    #connectionString = 'DRIVER={SQL Server};SERVER=localhost;DATABASE=test;UID=sa;PWD=Password1!'
-    connectionString = 'DRIVER={SQL Server};SERVER=dfdlmje-general-dbs.database.windows.net;DATABASE=test;UID=Y_apac_srir100;PWD=}hq*e<FKt3pq;6\#'
+    connectionString = 'DRIVER={SQL Server};SERVER=localhost;DATABASE=test;UID=sa;PWD=Password1!'
+    #connectionString = 'DRIVER={SQL Server};SERVER=dfdlmje-general-dbs.database.windows.net;DATABASE=test;UID=Y_apac_srir100;PWD=}hq*e<FKt3pq;6\#'
     conn = pyodbc.connect(connectionString)
     cursor = conn.cursor()
     cursor.execute(sql, kwargs)
@@ -13,11 +14,11 @@ def get_query(sql, *kwargs):
 
 
 def get_historical():
+    return redirect('https://api.jsonbin.io/b/61a0c55b0ddbee6f8b12325d/1')
+def get_historical_db():
     sql = """
-        select '1' as id, carCode, timestamp, lat, lng, velocity as speed, 'https://i.ibb.co/k6r7MJZ/truck-icon-100-100.png' as iconImage 
-
+        select '1' as id, carCode, timestamp, lat, lng, velocity as speed, 'https://i.ibb.co/k6r7MJZ/truck-icon-100-100.png' as iconImage
   from [test].[dbo].[testGPS4] order by carCode, timestamp
-
     """
     historical_data = get_query(sql)
     # wb = xlrd.open_workbook(r'C:\Users\Artie\Desktop\map stuff\test_run.xls')
@@ -46,15 +47,19 @@ def get_historical():
         car_list[ctype].append(data)
     #
     j = json.dumps(car_list)
-    #
-    return j
+    response = Response(j)
+    response.headers['Content-Type'] = 'application/json'
+    return response
     #with open('car.json', 'w') as f:
     #    f.write(j)
 
 
 def searchCoords(searchKey):
+    return redirect('https://api.jsonbin.io/b/61a0c41062ed886f9154face/1')
+
+def searchCoords_db(searchKey):
     # we should search db with searchKey
-    sql = """select '1' as id, carCode, timestamp, lat, lng, velocity as speed, 'https://i.ibb.co/k6r7MJZ/truck-icon-100-100.png' as iconImage from [test].[dbo].[testGPS3] 
+    sql = """select '1' as id, carCode, timestamp, lat, lng, velocity as speed, 'https://i.ibb.co/k6r7MJZ/truck-icon-100-100.png' as iconImage from [test].[dbo].[testGPS3]
              where carCode = LEFT((?), CHARINDEX('&', (?) + '&') - 1)
              or convert(varchar(10), timestamp, 101) = right(replace(?, '%2F','/'), 10)
              order by carCode, timestamp"""
@@ -85,5 +90,6 @@ def searchCoords(searchKey):
         car_list[ctype].append(data)
     #
     j = json.dumps(car_list)
-    #
-    return j
+    response = Response(j)
+    response.headers['Content-Type'] = 'application/json'
+    return response
